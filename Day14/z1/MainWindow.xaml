@@ -1,0 +1,204 @@
+﻿<Window x:Class="CRMBusiness.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CRM - Система управления клиентами" 
+        Height="600" Width="950"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="800">
+
+    <Window.Resources>
+        <DataTemplate x:Key="ClientTemplate">
+            <Border BorderBrush="#CCCCCC" 
+                    BorderThickness="0,0,0,1" 
+                    Padding="10,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" FontSize="20" Margin="0,0,10,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVip}" Value="True">
+                                        <Setter Property="Text" Value="⭐"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsVip}" Value="False">
+                                        <Setter Property="Text" Value="👤"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock FontSize="14" FontWeight="Bold">
+                            <Run Text="{Binding FullName}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Foreground="Gray">
+                            <Run Text="📞 "/><Run Text="{Binding Phone}"/>
+                            <Run Text="  ✉️ "/><Run Text="{Binding Email}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Foreground="#4CAF50">
+                            <Run Text="📌 "/><Run Text="{Binding ClientType}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding AddClientCommand}"/>
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding EditClientCommand}"/>
+        <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding DeleteClientCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding DeleteClientCommand}"/>
+    </Window.InputBindings>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход" Click="ExitMenuItem_Click" InputGestureText="Alt+F4"/>
+            </MenuItem>
+            <MenuItem Header="Клиенты">
+                <MenuItem Header="Добавить" Command="{Binding AddClientCommand}" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="Редактировать" Command="{Binding EditClientCommand}" InputGestureText="Ctrl+E"/>
+                <Separator/>
+                <MenuItem Header="Удалить" Command="{Binding DeleteClientCommand}" InputGestureText="Ctrl+D / Del"/>
+            </MenuItem>
+            <MenuItem Header="Настройки">
+                <MenuItem Header="О программе" Click="AboutMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Добавить" Command="{Binding AddClientCommand}" Background="#4CAF50" Foreground="White" Width="100"/>
+            <Button Content="Редактировать" Command="{Binding EditClientCommand}" Background="#2196F3" Foreground="White" Width="100"/>
+            <Button Content="Удалить" Command="{Binding DeleteClientCommand}" Background="#F44336" Foreground="White" Width="100"/>
+        </ToolBar>
+
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ЛЕВАЯ ЧАСТЬ: Список клиентов -->
+            <Grid Grid.Column="0" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Список клиентов" 
+                           FontSize="16" 
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                <ListBox x:Name="ClientsListBox" 
+                         Grid.Row="1"
+                         ItemsSource="{Binding Clients}"
+                         SelectedItem="{Binding SelectedClient}"
+                         ItemTemplate="{StaticResource ClientTemplate}"
+                         FocusVisualStyle="{x:Null}"/>
+            </Grid>
+
+            <!-- ПРАВАЯ ЧАСТЬ: Форма с данными клиента -->
+            <Border Grid.Column="1" 
+                    Margin="10" 
+                    Background="#F5F5F5" 
+                    CornerRadius="8"
+                    Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Информация о клиенте" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Margin="0,0,0,15"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Text="ФИО:" Grid.Row="1" FontWeight="Bold" Margin="5,5,5,0"/>
+                    <TextBox x:Name="FullNameTextBox" 
+                             Grid.Row="2" 
+                             Text="{Binding SelectedClient.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Телефон:" Grid.Row="3" FontWeight="Bold" Margin="5,5,5,0"/>
+                    <TextBox x:Name="PhoneTextBox" 
+                             Grid.Row="4" 
+                             Text="{Binding SelectedClient.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Email:" Grid.Row="5" FontWeight="Bold" Margin="5,5,5,0"/>
+                    <TextBox x:Name="EmailTextBox" 
+                             Grid.Row="6" 
+                             Text="{Binding SelectedClient.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Тип клиента:" Grid.Row="7" FontWeight="Bold" Margin="5,5,5,0"/>
+                    <ComboBox x:Name="ClientTypeComboBox" 
+                              Grid.Row="8"
+                              SelectedItem="{Binding SelectedClient.ClientType, Mode=TwoWay}">
+                        <ComboBoxItem Content="Обычный"/>
+                        <ComboBoxItem Content="VIP"/>
+                    </ComboBox>
+
+                    <TextBlock Text="История взаимодействий:" Grid.Row="9" FontWeight="Bold" Margin="5,5,5,0"/>
+                    <TextBox x:Name="HistoryTextBox" 
+                             Grid.Row="10" 
+                             Height="80" 
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             Text="{Binding SelectedClient.InteractionHistory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Button Grid.Row="11"
+                            Content="Сохранить изменения"
+                            Command="{Binding SaveCommand}"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            Width="150"
+                            Height="35"
+                            FontWeight="Bold"
+                            HorizontalAlignment="Center"
+                            Margin="0,20,0,10"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
