@@ -1,0 +1,40 @@
+﻿@model List<TodoListApp.Models.TodoItem>
+
+<h2>Мои задачи</h2>
+
+<!-- Фильтры -->
+<p>
+    <a href="/Todo/Index?status=all">Все</a> |
+    <a href="/Todo/Index?status=active">Активные</a> |
+    <a href="/Todo/Index?status=completed">Выполненные</a>
+</p>
+
+<!-- Форма добавления -->
+<form action="/Todo/Add" method="post">
+    <input type="text" name="Title" placeholder="Новая задача" required />
+    <button type="submit">Добавить</button>
+</form>
+
+<!-- Список задач -->
+<ul>
+    @foreach (var task in Model)
+    {
+        <li>
+            @if (task.IsCompleted)
+            {
+                <span style="text-decoration: line-through;">@task.Title</span>
+            }
+            else
+            {
+                <span>@task.Title</span>
+                <a href="/Todo/Complete/@task.Id">✔ Выполнить</a>
+            }
+            <a href="/Todo/Delete/@task.Id">🗑 Удалить</a>
+        </li>
+    }
+</ul>
+
+@if (!Model.Any())
+{
+    <p>Задач пока нет. Добавьте первую!</p>
+}
