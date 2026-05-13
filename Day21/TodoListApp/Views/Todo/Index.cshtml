@@ -1,0 +1,36 @@
+﻿@model List<TodoListApp.Models.ToDoItem>
+
+<h2>Список дел</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Добавить задачу</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Задача</th>
+            <th>Срок</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@(task.Deadline?.ToShortDateString() ?? "—")</td>
+                <td>@(task.IsCompleted ? "Выполнено" : "Активно")</td>
+                <td>
+                    @if (!task.IsCompleted)
+                    {
+                        <a asp-action="Complete" asp-route-id="@task.Id">Выполнить</a>
+                        <span> | </span>
+                    }
+                    <a asp-action="Delete" asp-route-id="@task.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

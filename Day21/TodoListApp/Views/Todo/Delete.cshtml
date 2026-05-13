@@ -1,0 +1,18 @@
+﻿@model TodoListApp.Models.ToDoItem
+
+@{
+    ViewData["Title"] = "Удалить задачу";
+}
+
+<h2>Удалить задачу</h2>
+
+<div>
+    <p>Вы уверены, что хотите удалить задачу?</p>
+    <p><strong>@Model.Title</strong></p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+</form>
