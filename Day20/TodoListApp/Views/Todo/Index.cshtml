@@ -1,0 +1,52 @@
+﻿@model List<TodoListApp.Models.TaskDto>
+
+<h2>📋 Список дел</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<!-- Фильтры -->
+<p>
+    <a href="/Todo/Index?status=all">Все</a> |
+    <a href="/Todo/Index?status=active">Активные</a> |
+    <a href="/Todo/Index?status=completed">Выполненные</a>
+</p>
+
+<!-- Ссылка на форму добавления -->
+<p>
+    <a href="/Todo/Add" class="btn btn-primary">➕ Добавить задачу</a>
+</p>
+
+<!-- Список задач -->
+<ul class="list-group">
+    @foreach (var task in Model)
+    {
+        <li class="list-group-item">
+            @if (task.IsCompleted)
+            {
+                <s>@task.Title</s>
+            }
+            else
+            {
+                <span>@task.Title</span>
+                if (task.DueDate.HasValue)
+                {
+                    <small class="text-muted"> (Срок: @task.DueDate.Value.ToShortDateString())</small>
+                }
+                <a href="/Todo/Complete/@task.Id" class="btn btn-sm btn-success float-end">✔ Выполнить</a>
+            }
+        </li>
+    }
+</ul>
+
+@if (!Model.Any())
+{
+    <p class="mt-3">✨ Задач пока нет. Добавьте первую!</p>
+}

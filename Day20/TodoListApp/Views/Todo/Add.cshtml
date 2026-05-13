@@ -1,0 +1,25 @@
+﻿@model TodoListApp.Models.TaskViewModel
+
+<h2>Добавить задачу</h2>
+
+<form asp-action="Add" method="post">
+    <div>
+        <label>Описание</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Срок выполнения</label>
+        <input asp-for="DueDate" type="date" class="form-control" />
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<div>
+    <a href="/Todo/Index">Назад</a>
+</div>
