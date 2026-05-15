@@ -25,7 +25,6 @@ namespace CRMApp.ViewModels
         {
             _isExecuting = true;
             RaiseCanExecuteChanged();
-
             try
             {
                 await _execute();
